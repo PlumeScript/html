@@ -1,0 +1,122 @@
+// Plume🪶 - HTML (alpha)
+// Copyright (C) 2026-2026 Erwan Barbedor
+//
+// Check https://github.com/PlumeScript/html
+// for documentation or to report issues.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+/// Convert name to html format
+/// @param string s
+/// @return string
+macro convertName(s)
+	$s.replace(([A-Z]), -%1, ?rich).lower()
+end
+
+/// Escape an html string
+/// @param string s
+/// @return string
+macro escapeHTML(s)
+	$s.replace(&, &amp;).replace(<, &lt;).replace(>, &gt;).replace(", &quot;)
+end
+
+/// Output an html tag
+/// @public
+/// @param name string
+/// @param content string
+/// @param autoClose flag <input/> tag-like
+/// @param noClose flag <img> tag-like. Exclusive with autoClose
+/// @param safe flag If true, doesn't escape content.
+/// @param attrs table Map of tag attributes.
+///	*	Notes on attrs:
+///		*	Cannot use auto, ClosenoClose, safe as attribute.
+///		*	Map keys should be string.
+///		*	Map keys will be converted from `thisIsAnAttribute` to `this-is-an-attribute`
+///		*	Map values should be string, or table with a tostring meta-method, or boolean
+/// @return string
+macro Tag (name, content, ?autoClose, ?noClose, ?safe, ...attrs)
+	if autoClose and noClose
+		// Waiting for implementation of std error
+	end
+
+	set name = $escapeHTML($name)
+	
+	<$name
+		for key, value in items(attrs)
+			set key   = $escapeHTML($convertName($key))
+			if value==true
+				\s$key
+			else
+				\s$key="$escapeHTML($value)"
+			end
+		end
+		if autoClose
+			/
+		end
+	>
+
+		if safe
+			$content
+		else
+			$escapeHTML($content)
+		end
+
+	if not autoClose and not noClose
+	</$name>
+	end
+end
+
+let tagNames = @table
+	- Div
+	- Span
+	- Section
+	- Article
+	- Header
+	- Footer
+	- P
+	- Pre
+	- Blockquote
+	- A
+	- Nav
+	- Ul
+	- Ol
+	- Li
+	- Table
+	- Thead
+	- Tbody
+	- Tr
+	- Th
+	- Td
+	for i in seq(6)
+		- H$i
+	end
+end
+
+let tagNamesNoClose = @table
+	- Img
+	- Br
+	- Input
+	- Hr
+end
+
+Tag: $Tag
+for name in tagNames
+	$name: macro(...args)
+		$Tag($name.lower(), ...args)
+	end
+end
+for name in tagNamesNoClose
+	$name: macro(...args)
+		$Tag($name.lower(), ...args, ?noClose)
+	end
+end
