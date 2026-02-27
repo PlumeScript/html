@@ -27,6 +27,7 @@ end
 /// @param string s
 /// @return string
 macro escapeHTML(s)
+	set s = $String($s)
 	$s.replace(&, &amp;).replace(<, &lt;).replace(>, &gt;).replace(", &quot;)
 end
 
