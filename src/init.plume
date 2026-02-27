@@ -123,6 +123,9 @@ let tagNames = @table
 	- Center
 	- Strong
 	- Em
+	- Title
+	- Head
+	- Body
 	for i in seq(6)
 		- H$i
 	end
