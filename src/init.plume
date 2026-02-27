@@ -119,6 +119,10 @@ let tagNames = @table
 	- Td
 	- Style
 	- Script
+	- Html
+	- Center
+	- Strong
+	- Em
 	for i in seq(6)
 		- H$i
 	end
