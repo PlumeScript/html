@@ -17,21 +17,33 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 /// Convert name to html format
-/// @param string s
+/// @param s string
 /// @return string
 macro convertName(s)
 	$s.replace(([A-Z]), -%1, ?rich).lower()
 end
 
 /// Escape an html string
-/// @param string s
+/// @param s string
 /// @return string
 macro escapeHTML(s)
 	set s = $String($s)
 	$s.replace(&, &amp;).replace(<, &lt;).replace(>, &gt;).replace(", &quot;)
 end
 
-/// Output an html tag
+/// Custom type handler
+/// @param x any
+/// @return string
+macro getType(x)
+	if type(x) == "table"
+		$(x.type? or "table")
+	else
+		$type($x)
+	end
+end
+
+/// Representation of an HTML tag
+/// Read-only
 /// @public
 /// @param name string
 /// @param content string
@@ -46,35 +58,42 @@ end
 ///		*	Map values should be string, or table with a tostring meta-method, or boolean
 /// @return string
 macro Tag (name, content, ?autoClose, ?noClose, ?safe, ...attrs)
-	if autoClose and noClose
-		// Waiting for implementation of std error
-	end
+	type: node
+	ref render: macro(?isSafe)
+		let escape = $(not isSafe and not safe)
 
-	set name = $escapeHTML($name)
-	
-	<$name
-		for key, value in items(attrs)
-			set key = $escapeHTML($convertName($key))
-			if value==true
-				\s$key
-			else
-				\s$key="$escapeHTML($value)"
+		if autoClose and noClose
+			// Waiting for implementation of std error
+		end
+
+		set name = $escapeHTML($name)
+		
+		<$name
+			for key, value in items(attrs)
+				set key = $escapeHTML($convertName($key))
+				if value==true
+					\s$key
+				else
+					\s$key="$escapeHTML($value)"
+				end
 			end
-		end
-		if autoClose
-			/
-		end
-	>
+			if autoClose
+				/
+			end
+		>
+			if getType(content) == "node"
+				$content.render(isSafe: $(not escape))
+			elseif escape
+				$escapeHTML($content)
+			else
+				$content
+			end
 
-		if safe
-			$content
-		else
-			$escapeHTML($content)
+		if not autoClose and not noClose
+		</$name>
 		end
-
-	if not autoClose and not noClose
-	</$name>
 	end
+	meta tostring: $render
 end
 
 let tagNames = @table
@@ -98,14 +117,11 @@ let tagNames = @table
 	- Tr
 	- Th
 	- Td
+	- Style
+	- Script
 	for i in seq(6)
 		- H$i
 	end
-end
-
-let safesTagsNames = @table
-	- Style
-	- Script
 end
 
 let tagNamesNoClose = @table
@@ -121,11 +137,7 @@ for name in tagNames
 		$Tag($name.lower(), ...args)
 	end
 end
-for name in safesTagsNames
-	$name: macro(...args)
-		$Tag($name.lower(), ?safe, ...args)
-	end
-end
+
 for name in tagNamesNoClose
 	$name: macro(...args)
 		$Tag($name.lower(), ...args, ?noClose)
