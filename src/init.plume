@@ -81,6 +81,9 @@ Doctype: macro(doctype)
 	<!DOCTYPE $doctype>
 end
 
+/// Escape given text
+/// @public
+/// @param 
 Text: macro(content)
 	$escapeHTML($content)
 end
