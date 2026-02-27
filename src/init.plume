@@ -98,11 +98,14 @@ let tagNames = @table
 	- Tr
 	- Th
 	- Td
-	- Style
-	- Script
 	for i in seq(6)
 		- H$i
 	end
+end
+
+let safesTagsNames = @table
+	- Style
+	- Script
 end
 
 let tagNamesNoClose = @table
@@ -116,6 +119,11 @@ Tag: $Tag
 for name in tagNames
 	$name: macro(...args)
 		$Tag($name.lower(), ...args)
+	end
+end
+for name in safesTagsNames
+	$name: macro(...args)
+		$Tag($name.lower(), ?safe, ...args)
 	end
 end
 for name in tagNamesNoClose
