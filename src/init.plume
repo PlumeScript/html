@@ -136,6 +136,6 @@ end
 
 for name in tagNamesNoClose
 	$name: macro(...args)
-		$Tag($name.lower(), ...args, ?noClose)
+		$Tag($name.lower(), $empty, ...args, ?noClose)
 	end
 end
