@@ -39,7 +39,7 @@ end
 /// @param safe flag If true, doesn't escape content.
 /// @param attrs table Map of tag attributes.
 ///	*	Notes on attrs:
-///		*	Cannot use auto, ClosenoClose, safe as attribute.
+///		*	Cannot use autoClose, noClose, safe as attribute.
 ///		*	Map keys should be string.
 ///		*	Map keys will be converted from `thisIsAnAttribute` to `this-is-an-attribute`
 ///		*	Map values should be string, or table with a tostring meta-method, or boolean
@@ -53,7 +53,7 @@ macro Tag (name, content, ?autoClose, ?noClose, ?safe, ...attrs)
 	
 	<$name
 		for key, value in items(attrs)
-			set key   = $escapeHTML($convertName($key))
+			set key = $escapeHTML($convertName($key))
 			if value==true
 				\s$key
 			else
