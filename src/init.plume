@@ -38,7 +38,7 @@ end
 /// @param autoClose flag <input/> tag-like
 /// @param noClose flag <img> tag-like. Exclusive with autoClose
 /// @param safe flag If true, doesn't escape content.
-/// @param attrs table Map of tag attributes.
+/// @param ...attrs table Map of tag attributes.
 ///	*	Notes on attrs:
 ///		*	Cannot use autoClose, noClose, safe as attribute.
 ///		*	Map keys should be string.
