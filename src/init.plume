@@ -97,6 +97,8 @@ let tagNames = @table
 	- Tr
 	- Th
 	- Td
+	- Style
+	- Script
 	for i in seq(6)
 		- H$i
 	end
