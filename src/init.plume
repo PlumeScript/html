@@ -31,17 +31,6 @@ macro escapeHTML(s)
 	$s.replace(&, &amp;).replace(<, &lt;).replace(>, &gt;).replace(", &quot;)
 end
 
-/// Custom type handler
-/// @param x any
-/// @return string
-macro getType(x)
-	if type(x) == "table"
-		$(x.type? or "table")
-	else
-		$type($x)
-	end
-end
-
 /// Representation of an HTML tag
 /// Read-only
 /// @public
@@ -56,55 +45,44 @@ end
 ///		*	Map keys should be string.
 ///		*	Map keys will be converted from `thisIsAnAttribute` to `this-is-an-attribute`
 ///		*	Map values should be string, or table with a tostring meta-method, or boolean
-/// @return table
-macro Tag (name, content, ?autoClose, ?noClose, ?safe, ...attrs)
-	type: node
-	ref render: macro(?isSafe)
-		let escape = $(not isSafe and not safe)
-
-		if autoClose and noClose
-			// Waiting for implementation of std error
-		end
-
-		set name = $escapeHTML($name)
-		
-		<$name
-			for key, value in items(attrs)
-				set key = $escapeHTML($convertName($key))
-				if value==true
-					\s$key
-				else
-					\s$key="$escapeHTML($value)"
-				end
-			end
-			if autoClose
-				/
-			end
-		>
-			if getType(content) == "node"
-				$content.render(isSafe: $(not escape))
-			elseif escape and not getType(content) == "rawNode"
-				$escapeHTML($content)
-			else
-				$content
-			end
-
-		if not autoClose and not noClose
-		</$name>
-		end
+/// @return string
+macro Tag (name, content, ?autoClose, ?noClose, ...attrs)
+	if autoClose and noClose
+		// Waiting for implementation of std error
 	end
-	meta tostring: $render
+
+	set name = $escapeHTML($name)
+	
+	<$name
+		for key, value in items(attrs)
+			set key = $escapeHTML($convertName($key))
+			if value==true
+				\s$key
+			else
+				\s$key="$escapeHTML($value)"
+			end
+		end
+		if autoClose
+			/
+		end
+	>
+		$content
+
+	if not autoClose and not noClose
+	</$name>
+	end
 end
 
 /// Output the doctype
 /// @public
 /// @param doctype string
-/// @return table
+/// @return string
 Doctype: macro(doctype)
-	type: rawNode
-	meta tostring: macro()
-		<!DOCTYPE $doctype>
-	end
+	<!DOCTYPE $doctype>
+end
+
+Text: macro(content)
+	$escapeHTML($content)
 end
 
 let tagNames = @table
