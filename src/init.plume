@@ -56,7 +56,7 @@ end
 ///		*	Map keys should be string.
 ///		*	Map keys will be converted from `thisIsAnAttribute` to `this-is-an-attribute`
 ///		*	Map values should be string, or table with a tostring meta-method, or boolean
-/// @return string
+/// @return table
 macro Tag (name, content, ?autoClose, ?noClose, ?safe, ...attrs)
 	type: node
 	ref render: macro(?isSafe)
@@ -83,7 +83,7 @@ macro Tag (name, content, ?autoClose, ?noClose, ?safe, ...attrs)
 		>
 			if getType(content) == "node"
 				$content.render(isSafe: $(not escape))
-			elseif escape
+			elseif escape and not getType(content) == "rawNode"
 				$escapeHTML($content)
 			else
 				$content
@@ -94,6 +94,17 @@ macro Tag (name, content, ?autoClose, ?noClose, ?safe, ...attrs)
 		end
 	end
 	meta tostring: $render
+end
+
+/// Output the doctype
+/// @public
+/// @param doctype string
+/// @return table
+Doctype: macro(doctype)
+	type: rawNode
+	meta tostring: macro()
+		<!DOCTYPE $doctype>
+	end
 end
 
 let tagNames = @table
