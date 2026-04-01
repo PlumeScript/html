@@ -88,7 +88,7 @@ Text: macro(content)
 	$escapeHTML($content)
 end
 
-let tagNames = @table
+let tagNames = do
 	- Div
 	- Span
 	- Section
@@ -123,7 +123,7 @@ let tagNames = @table
 	end
 end
 
-let tagNamesNoClose = @table
+let tagNamesNoClose = do
 	- Img
 	- Br
 	- Input
@@ -139,6 +139,6 @@ end
 
 for name in tagNamesNoClose
 	$name: macro(...args)
-		$Tag($name.lower(), $empty, ...args, ?noClose)
+		$Tag($name.lower(), $empty, ?noClose, ...args)
 	end
 end
