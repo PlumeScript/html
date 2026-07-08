@@ -103,7 +103,6 @@ let tagNames = do
 	- Ul
 	- Ol
 	- Li
-	- Table
 	- Thead
 	- Tbody
 	- Tr
@@ -135,6 +134,9 @@ for name in tagNames
 	$name: macro(...args)
 		$Tag($name.lower(), ...args)
 	end
+end
+_Table: macro(...args)
+	$Tag(table, ...args)
 end
 
 for name in tagNamesNoClose
