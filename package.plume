@@ -3,7 +3,7 @@ name: html
 author: Erwan Barbedor
 description: html wrapper
 version: 0.1.0
-source: $("https://github.com/PlumeScript/html")
+source: github.com/PlumeScript/html
 include: do
 	- init.plume
 	- LICENSE
@@ -14,6 +14,6 @@ end
 required: do
 	css: do
 		version: =0.1.0
-		source: $("https://github.com/PlumeScript/css")
+		source: github.com/PlumeScript/css
 	end
 end
