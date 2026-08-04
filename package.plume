@@ -2,11 +2,11 @@ plumeVersion: b61 (Owl Edition)
 name: html
 author: Erwan Barbedor
 description: html wrapper
-version: 0.1.0
+version: 0.1.1
 source: github.com/PlumeScript/html
 required: do
 	css: do
-		version: =0.1.0
+		version: =0.1.2
 		source: github.com/PlumeScript/css
 	end
 end
