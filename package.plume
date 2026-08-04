@@ -4,13 +4,6 @@ author: Erwan Barbedor
 description: html wrapper
 version: 0.1.0
 source: github.com/PlumeScript/html
-include: do
-	- init.plume
-	- LICENSE
-end
-exclude: do
-	- .gitignore
-end
 required: do
 	css: do
 		version: =0.1.0
