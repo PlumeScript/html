@@ -3,6 +3,8 @@
 // Copyright © Erwan Barbedor
 // Licensed under the MIT License — see LICENSE for details.
 
+let css from $import(css)
+
 /// Convert name to html format
 /// @param s string
 /// @return string
@@ -43,6 +45,11 @@ macro Tag (name, content, ?autoClose, ?noClose, ...attrs)
 	<$name
 		for key, value in items(attrs)
 			set key = $escapeHTML($convertName($key))
+			
+			if key == "style" and type(value) == "table"
+				set value = $css(...value)
+			end
+
 			if value==true
 				\s$key
 			else
