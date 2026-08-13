@@ -11,7 +11,7 @@ macro convertName(String s)
 end
 
 // Escape an html string
-macro escapeHTML(String s)
+ref escapeHTML: macro(String s)
 	$s.replace(&, &amp;).replace(<, &lt;).replace(>, &gt;).replace(", &quot;)
 end
 
@@ -61,11 +61,6 @@ end
 
 Doctype: macro(doctype)
 	<!DOCTYPE $doctype>
-end
-
-// Escape given text
-Text: macro(content)
-	$ escapeHTML(content)
 end
 
 let tagNames = do
