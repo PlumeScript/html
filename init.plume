@@ -5,37 +5,29 @@
 
 let css from $import(css)
 
-/// Convert name to html format
-/// @param s string
-/// @return string
-macro convertName(s)
+// Convert name to html format
+macro convertName(String s)
 	$s.replace(([A-Z]), -%1, ?rich).lower()
 end
 
-/// Escape an html string
-/// @param s string
-/// @return string
-macro escapeHTML(s)
-	set s = $String($s)
+// Escape an html string
+macro escapeHTML(String s)
 	$s.replace(&, &amp;).replace(<, &lt;).replace(>, &gt;).replace(", &quot;)
 end
 
-/// Representation of an HTML tag
-/// Read-only
-/// @public
-/// @param name string
-/// @param content string
-/// @param autoClose flag <input/> tag-like
-/// @param noClose flag <img> tag-like. Exclusive with autoClose
-/// @param safe flag If true, doesn't escape content.
-/// @param ...attrs table Map of tag attributes.
-///	*	Notes on attrs:
-///		*	Cannot use autoClose, noClose, safe as attribute.
-///		*	Map keys should be string.
-///		*	Map keys will be converted from `thisIsAnAttribute` to `this-is-an-attribute`
-///		*	Map values should be string, or table with a tostring meta-method, or boolean
-/// @return string
-macro Tag (name, content, ?autoClose, ?noClose, ...attrs)
+// Representation of an HTML tag
+// @param name string
+// @param content string
+// @param autoClose flag <input/> tag-like
+// @param noClose flag <img> tag-like. Exclusive with autoClose
+// @param safe flag If true, doesn't escape content.
+// @param ...attrs table Map of tag attributes.
+//	*	Notes on attrs:
+//		*	Cannot use autoClose, noClose, safe as attribute.
+//		*	Map keys should be string.
+//		*	Map keys will be converted from `thisIsAnAttribute` to `this-is-an-attribute`
+//	*	Map values should be string, or table with a tostring meta-method, or boolean
+macro Tag (String name, String content, ?autoClose, ?noClose, ...attrs)
 	if autoClose and noClose
 		// Waiting for implementation of std error
 	end
@@ -44,7 +36,7 @@ macro Tag (name, content, ?autoClose, ?noClose, ...attrs)
 	
 	<$name
 		for key, value in items(attrs)
-			set key = $escapeHTML($convertName($key))
+			set key = $ escapeHTML(convertName(key))
 			
 			if key == "style" and type(value) == "table"
 				set value = $css(...value)
@@ -67,19 +59,13 @@ macro Tag (name, content, ?autoClose, ?noClose, ...attrs)
 	end
 end
 
-/// Output the doctype
-/// @public
-/// @param doctype string
-/// @return string
 Doctype: macro(doctype)
 	<!DOCTYPE $doctype>
 end
 
-/// Escape given text
-/// @public
-/// @param 
+// Escape given text
 Text: macro(content)
-	$escapeHTML($content)
+	$ escapeHTML(content)
 end
 
 let tagNames = do
@@ -189,16 +175,16 @@ end
 Tag: $Tag
 for name in tagNames
 	$name: macro(...args)
-		$Tag($name.lower(), ...args)
+		$ Tag(name.lower(), ...args)
 	end
 end
 
 for name in tagNamesNoClose
 	$name: macro(...args)
-		$Tag($name.lower(), $empty, ?noClose, ...args)
+		$ Tag(name.lower(), empty, ?noClose, ...args)
 	end
 end
 
 Colgroup: macro(content, ...args)
-	$Tag(colgroup, $content, autoClose: $(not content), ...args)
+	$ Tag("colgroup", content, autoClose: not content, ...args)
 end
