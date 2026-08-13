@@ -29,7 +29,7 @@ end
 //	*	Map values should be string, or table with a tostring meta-method, or boolean
 macro Tag (String name, String content, ?autoClose, ?noClose, ...attrs)
 	if autoClose and noClose
-		// Waiting for implementation of std error
+		raise Cannot use "autoClose" and "noClose" flags together.
 	end
 
 	set name = $escapeHTML($name)
