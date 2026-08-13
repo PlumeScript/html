@@ -44,7 +44,7 @@ macro Tag (String name, String content, ?autoClose, ?noClose, ...attrs)
 
 			if value==true
 				\s$key
-			else
+			elseif value != false and value != empty
 				\s$key="$escapeHTML($value)"
 			end
 		end
