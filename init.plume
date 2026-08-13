@@ -115,6 +115,55 @@ let tagNames = do
 	- Figure
 	- Figcaption
 	- Code
+	- Main
+	- Aside
+	- Address
+	- Details
+	- Summary
+	- Dialog
+	- Menu
+	- Search
+	- Template
+	- Noscript
+	- Caption
+	- Form
+	- Fieldset
+	- Legend
+	- Label
+	- Select
+	- Option
+	- Optgroup
+	- Datalist
+	- Textarea
+	- Button
+	- Output
+	- Progress
+	- Meter
+	- Video
+	- Audio
+	- Iframe
+	- Object
+	- Canvas
+	- Picture
+	- Mark
+	- Small
+	- Sub
+	- Sup
+	- Del
+	- Ins
+	- Abbr
+	- Cite
+	- Kbd
+	- Samp
+	- Var
+	- Time
+	- Data
+	- Bdi
+	- Bdo
+	- Q
+	- Ruby
+	- Rt
+	- Rp
 	for i in seq(6)
 		- H$i
 	end
@@ -126,6 +175,15 @@ let tagNamesNoClose = do
 	- Input
 	- Hr
 	- Meta
+	- Col
+	- Source
+	- Track
+	- Embed
+	- Param
+	- Wbr
+	- Link
+	- Base
+	- Area
 end
 
 Tag: $Tag
@@ -139,4 +197,8 @@ for name in tagNamesNoClose
 	$name: macro(...args)
 		$Tag($name.lower(), $empty, ?noClose, ...args)
 	end
+end
+
+Colgroup: macro(content, ...args)
+	$Tag(colgroup, $content, autoClose: $(not content), ...args)
 end
