@@ -42,6 +42,18 @@ macro Tag (String name, String content, ?autoClose, ?noClose, ...attrs)
 				set value = $css(...value)
 			end
 
+			if key == "class" and type(value) == "table"
+				set value = @Table.join(sep: \s)
+					for k, v in items(value)
+						if k.isNumber()
+							- $v
+						elseif v
+							- $k
+						end
+					end
+				end
+			end
+
 			if value==true
 				\s$key
 			elseif value != false and value != empty
