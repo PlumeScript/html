@@ -122,6 +122,7 @@ let tagNamesNoClose = do
 	- Br
 	- Input
 	- Hr
+	- Meta
 end
 
 Tag: $Tag
