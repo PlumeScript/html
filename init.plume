@@ -112,6 +112,8 @@ let tagNames = do
 	- Title
 	- Head
 	- Body
+	- Figure
+	- Figcaption
 	for i in seq(6)
 		- H$i
 	end
