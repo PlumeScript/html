@@ -114,6 +114,7 @@ let tagNames = do
 	- Body
 	- Figure
 	- Figcaption
+	- Code
 	for i in seq(6)
 		- H$i
 	end
