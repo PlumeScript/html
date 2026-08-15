@@ -6,7 +6,7 @@ version: 0.3.0
 source: github.com/PlumeScript/html
 required: do
 	css: do
-		version: =0.1.3
+		version: ^0.2.0
 		source: github.com/PlumeScript/css
 	end
 end
