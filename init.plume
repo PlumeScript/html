@@ -27,7 +27,7 @@ end
 //		*	Map keys should be string.
 //		*	Map keys will be converted from `thisIsAnAttribute` to `this-is-an-attribute`
 //	*	Map values should be string, or table with a tostring meta-method, or boolean
-macro Tag (String name, String content, ?autoClose, ?noClose, ...attrs)
+macro Tag (String name, content, ?autoClose, ?noClose, ...attrs)
 	if autoClose and noClose
 		raise Cannot use "autoClose" and "noClose" flags together.
 	end
