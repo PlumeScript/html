@@ -2,7 +2,7 @@ plumeVersion: b63 (Owl Edition)
 name: html
 author: Erwan Barbedor
 description: html wrapper
-version: 0.3.0
+version: 0.3.1
 source: github.com/PlumeScript/html
 required: do
 	css: do
